@@ -78,6 +78,8 @@ def get_sp_L_norm_from_H(H, W=None):
 
 
 #==========#==========#==========#==========#==========#==========#==========#
+# 將 L_norm 做chebyshev輸入的正規化
+
 def get_sp_L_chebyshev_norm_from_H(H, W=None, lambda_max=2.0):
     num_nodes, num_hyperedges = H.shape
     DvH_WDe_HDv = get_sp_DvH_WDe_HDv(H, W)
