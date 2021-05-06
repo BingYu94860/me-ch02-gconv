@@ -36,8 +36,9 @@ def get_sp_DAD(adj, mode=1):
         A = sp.coo_matrix(adj)
     # 幾何平均
     D = np.power(np.sum(np.abs(A), -1), -0.5)
+    # D[np.isinf(D)] = 0.
     DAD = A.multiply(D).T.multiply(D)
-    return DAD
+    return DAD.astype('float32')
 
 #==========#==========#==========#==========#==========#==========#==========#
 # 從 adj 計算出 正規化拉普拉斯 L_norm
@@ -66,4 +67,4 @@ def get_sp_L_chebyshev_norm_from_adj(adj, lambda_max=2.0):
     else:
         L_norm = sp.eye(N) - DaD
         L_chebyshev_norm = (2.0 / lambda_max) * L_norm - sp.eye(N)
-    return L_chebyshev_norm
+    return L_chebyshev_norm.astype('float32')
