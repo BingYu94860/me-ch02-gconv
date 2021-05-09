@@ -28,8 +28,20 @@ def get_sp_H(hyperedges: list, num_nodes: int):
 
     H = sp.coo_matrix((values, (e_rows, e_cols)),
                       shape=[num_nodes, num_hyperedges])
-    return H.astype(np.float32)
+    return H.astype('float32')
+#==========#==========#==========#==========#==========#==========#==========#
+# 從 H 得到 超邊 list
 
+
+def get_hyperedges(sparse_matrix):
+    H = sp.csc_matrix(sparse_matrix)
+    hyperedges = []
+    for i in range(H.shape[1]):
+        a = H.indptr[i]
+        b = H.indptr[i+1]
+        hyperedge = H.indices[a:b].tolist()
+        hyperedges.append(hyperedge)
+    return hyperedges
 #==========#==========#==========#==========#==========#==========#==========#
 # 從 H 計算出 鄰接矩陣adj
 
@@ -44,7 +56,7 @@ def get_sp_adj_from_H(H, W=None):
     # H @ W @ H.T
     HWH = H.multiply(W) @ H.T
     adj = HWH - Dv
-    return adj
+    return adj.astype('float32')
 
 #==========#==========#==========#==========#==========#==========#==========#
 # 從 H 計算出 Dv^(-0.5)@H @ W@De^(-1) @ H@Dv^(-0.5)
@@ -64,7 +76,7 @@ def get_sp_DvH_WDe_HDv(H, W=None):
     DvH = H.multiply(np.power(Dv, -0.5))
     # DvH @ WDe @ HDv
     DvH_WDe_HDv = DvH.multiply(WDe) @ DvH.T
-    return DvH_WDe_HDv
+    return DvH_WDe_HDv.astype('float32')
 
 #==========#==========#==========#==========#==========#==========#==========#
 # 從 H 計算出 正規化拉普拉斯 L_norm
@@ -74,7 +86,7 @@ def get_sp_L_norm_from_H(H, W=None):
     num_nodes, num_hyperedges = H.shape
     DvH_WDe_HDv = get_sp_DvH_WDe_HDv(H, W)
     L_norm = sp.eye(num_nodes) - DvH_WDe_HDv
-    return L_norm
+    return L_norm.astype('float32')
 
 
 #==========#==========#==========#==========#==========#==========#==========#
@@ -89,4 +101,4 @@ def get_sp_L_chebyshev_norm_from_H(H, W=None, lambda_max=2.0):
     else:
         L_norm = sp.eye(num_nodes) - DvH_WDe_HDv
         L_chebyshev_norm = (2.0 / lambda_max) * L_norm - sp.eye(N)
-    return L_chebyshev_norm
+    return L_chebyshev_norm.astype('float32')

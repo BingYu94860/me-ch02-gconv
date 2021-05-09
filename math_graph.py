@@ -2,11 +2,6 @@ import numpy as np
 import scipy.sparse as sp
 
 
-def get_edges(sparse_matrix, is_triu=True):
-    coo = sp.coo_matrix(sparse_matrix)
-    if is_triu:
-        coo = sp.triu(coo, 1)
-    return np.vstack((coo.row, coo.col)).transpose()  # .tolist()
 #==========#==========#==========#==========#==========#==========#==========#
 # 產生鄰接矩陣adj
 
@@ -21,10 +16,18 @@ def get_adj(edges: list, num_nodes: int):
     bigger = adj.T > adj
     adj = adj - adj.multiply(bigger) + adj.T.multiply(bigger)
     return adj
+#==========#==========#==========#==========#==========#==========#==========#
+# 從 adj 得到 邊
 
 
+def get_edges(sparse_matrix, is_triu=True):
+    coo = sp.coo_matrix(sparse_matrix)
+    if is_triu:
+        coo = sp.triu(coo, 1)
+    return np.vstack((coo.row, coo.col)).transpose()  # .tolist()
 #==========#==========#==========#==========#==========#==========#==========#
 # 從 adj 計算出 D^(-0.5) @ (I+adj) @D^(-0.5)
+
 
 def get_sp_DAD(adj, mode=1):
     N = adj.shape[-1]
@@ -50,7 +53,7 @@ def get_sp_L_norm_from_adj(adj):
     D = np.power(np.sum(np.abs(a), -1), -0.5)
     DaD = get_sp_DAD(adj, mode=1)
     L_norm = sp.eye(N) - DaD
-    return L_norm
+    return L_norm.astype('float32')
 
 
 #==========#==========#==========#==========#==========#==========#==========#
