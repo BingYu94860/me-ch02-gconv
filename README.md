@@ -34,13 +34,20 @@ os.chdir(root)
 
 # Part3 圖卷積的Keras Layer
 
-執行「[Demo] Layer for HyperGraphConvs.ipynb」的 Jupyter Notebook的檔案，需要將「math_graph.py、math_graph.py」放在同一資料夾下。
+執行「[Demo] Layer for GraphConvs.ipynb」的 Jupyter Notebook的檔案，需要將「layer_gconv.py、math_graph.py」放在同一資料夾下。
 
-備註:  使用密集張量運算
+備註:  
+
+1. 使用密集張量運算 (以後再更新，稀疏張量運算的部分)
 
 # Part4 超圖卷積的Keras Layer
 
-執行「[Demo] Layer for HyperGraphConvs.ipynb」的 Jupyter Notebook的檔案，需要將「math_hypergraph.py、math_hypergraph.py、math_graph.py」放在同一資料夾下。
+執行「[Demo] Layer for HyperGraphConvs.ipynb」的 Jupyter Notebook的檔案，需要將「layer_hgconv.py、math_hypergraph.py、math_graph.py」放在同一資料夾下。
 
-備註:  HyperGraphConvs() 架構類似於 GraphConvs()
+備註:  
+
+1. 使用密集張量運算 (以後再更新，稀疏張量運算的部分)
+2.  HyperGraphConvs() 架構類似於 GraphConvs()
+
+
 
